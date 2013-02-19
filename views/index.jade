@@ -27,9 +27,12 @@ block new_event
 			form(action='/calendar/new_event', method="post", id="newEventForm")
 				label(for="newEventName") Event Name : 
 					input(id="newEventName", name="newEventName", tabindex="1", autofocus="true")
-				input(id="newEventDate", name="newEventDate", type="datetime", tabindex="2") Event Date
-				input(id="newEventDescription", name="newEventDescription") Event Description
-				input(id="newEventAttendees", name="newEventAttendees") Event Attendees					
+				label(for="newEventDate") Event Date : 
+					input(id="newEventDate", name="newEventDate", type="datetime", tabindex="1", autofocus="true") 
+				label(for="newEventDescription") Event Description : 				
+					input(id="newEventDescription", name="newEventDescription", tabindex="1", autofocus="true")
+				label(for="newEventAttendees") Event Attendees : 				
+					input(id="newEventAttendees", name="newEventAttendees", tabindex="1", autofocus="true")				
 		div(class="modal-footer")
 			button(class="btn", data-dismiss="modal") Close
 			button(id="saveNewEvent", class="btn btn-primary") Save
