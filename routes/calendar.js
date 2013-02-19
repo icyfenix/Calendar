@@ -54,28 +54,29 @@ exports.newEvent = function(req, res) {
 		Location : event_location
 	});
 	res.send('New event added to calendar successfully!');
+	console.log(Calendar);
 };
 
-exports.nextTimeCanActivity = function(req, res) {
-	var now = new Date(); //current date and time
-	var activity = req.param.activity;
-	var available_times = [];
-	if (activity == "lunch") {
-		for(var i = 0; i < Calendar.length; i++) {
+// exports.nextTimeCanActivity = function(req, res) {
+// 	var now = new Date(); //current date and time
+// 	var activity = req.param.activity;
+// 	var available_times = [];
+// 	if (activity == "lunch") {
+// 		for(var i = 0; i < Calendar.length; i++) {
 
-		}
-	} else if (activity == "dinner") {
+// 		}
+// 	} else if (activity == "dinner") {
 
-	} else if (activity == "drinks") {
+// 	} else if (activity == "drinks") {
 
-	} else if (activity == "vacation") {
+// 	} else if (activity == "vacation") {
 
-	} else if (activity == "mentor") {
+// 	} else if (activity == "mentor") {
 
-	} else if (activity == "hack") {
+// 	} else if (activity == "hack") {
 
-	}
-};
+// 	}
+// };
 
 var Calendar = [
 {
