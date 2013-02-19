@@ -56,7 +56,7 @@ exports.newEvent = function(req, res) {
 	res.send('New event added to calendar successfully!');
 };
 
-exports.nextTimeCanActivity = function(req. res) {
+exports.nextTimeCanActivity = function(req, res) {
 	var now = new Date(); //current date and time
 	var activity = req.param.activity;
 	var available_times = [];
