@@ -31,7 +31,7 @@ app.configure('development', function(){
 
 app.get('/', routes.index);
 app.get('/calendar/getItems/:num', calendar.getNItems);
-app.get('/calendar/new_event', calendar.newEvent);
+app.post('/calendar/new_event', calendar.newEvent);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
