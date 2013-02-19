@@ -1,21 +1,20 @@
 exports.getNItems = function(request, response) {
-	var itemCount = request.params.num || 3;
-	var now = new Date();
+	var itemCount = request.params.num || 3; //pass in num of events from request
+	var now = new Date(); //current date and time
 	var elligible_events = [];
-	for (var i=0;i<Calendar.length;i++){
-		//Eliminate dates already passed.
+	for (var i = 0; i < Calendar.length; i++){
+		//Eliminate dates already passed by adding all future dates to array
 		if (Calendar[i].date.getTime() > now.getTime()){
 			elligible_events.push(Calendar[i]);
 		}
 		//Now we have dates only in the future.
 	}
-	retItems = new Array(itemCount);
-	for (var y=0;y<elligible_events.length;y++){
+	retItems = new Array(itemCount); //new array with length of num passed in from request
+	for (var y = 0; y < elligible_events.length; y++){ //loop through eligible events array
 		var smallCount = 0;
-		var num = elligible_events[y].date.getTime(); 
-		for (var x=0;x<elligible_events.length;x++){
-			
-			if (num > elligible_events[x].date.getTime()){ 
+		var num = elligible_events[y].date.getTime(); //grab the time of each eligible event
+		for (var x = 0; x < elligible_events.length; x++){ //loop through eligible events array
+			if (num > elligible_events[x].date.getTime()){
 				smallCount++;
 			}
 		}
@@ -31,17 +30,51 @@ exports.getItemsForDay = function(request, response) {
 	var day = new Date(request.params.day);
 	var elligible_events = [];
 	//look for entries in that date
-	for (var i=0;i<Calendar.length;i++){
+	for (var i = 0; i < Calendar.length; i++){
 		//Eliminate dates already passed.
 		if (Calendar[i].date.toDateString() == day.toDateString()){
 			elligible_events.push(Calendar[i]);
 		}
 		//Now we have dates only in the future.
 	}
-
-
-
 	response.send(elligible_events);
+};
+
+exports.newEvent = function(req, res) {
+	var event_name = req.body.newEventName;
+	var event_date = req.body.newEventDate;
+	var event_description = req.body.newEventDescription;
+	var event_attendees = req.body.newEventAttendees;
+	var event_location = req.body.newEventAttendees;
+	Calendar.push({
+		Name : event_name,
+		date : new Date(event_date),
+		Description : event_description,
+		Attendees : event_attendees,
+		Location : event_location
+	});
+	res.send('New event added to calendar successfully!');
+};
+
+exports.nextTimeCanActivity = function(req, res) {
+	var now = new Date(); //current date and time
+	var activity = req.param.activity;
+	var available_times = [];
+	if (activity == "lunch") {
+		for(var i = 0; i < Calendar.length; i++) {
+
+		}
+	} else if (activity == "dinner") {
+
+	} else if (activity == "drinks") {
+
+	} else if (activity == "vacation") {
+
+	} else if (activity == "mentor") {
+
+	} else if (activity == "hack") {
+
+	}
 };
 
 var Calendar = [

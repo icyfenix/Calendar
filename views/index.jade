@@ -6,13 +6,16 @@ block next_appointments
 
 
 	script
-		var jqxhr = $.getJSON('http://localhost:5000/calendar/getItems/3',{}, function (data) {
-			for (var i=0;i<data.length;i++){
-				var li = $('<li>');
-				li.html(data[i].Name);
-				$('#appointments').append(li);
-			}
+		var jqxhr = $.getJSON('http://localhost:5000/calendar/getItems/3',
+			{},
+			function (data) {
+				for (var i = 0; i < data.length; i++){
+					var li = $('<li>');
+					li.html(data[i].Name);
+					$('#appointments').append(li);
+				}
 		});
+
 		jqxhr.error(function(){
 			console.log("Woo!");
 			})
@@ -41,6 +44,7 @@ block new_event
 		$("#saveNewEvent").click(function(){
 			$("newEventForm").submit();
 		});
+<<<<<<< HEAD
 
 block next_time	
 	select(name="nextTime", id="nextTime")
@@ -49,3 +53,5 @@ block next_time
 	option(value="Grab Dinner")	
 	option(value="Grab Drink")
 	option(value="Grab Drink")
+=======
+>>>>>>> 5b7c96aa8c0f29b27f2f9803f7fa9bf4d0ed1f8c
