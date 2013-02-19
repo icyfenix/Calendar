@@ -44,3 +44,14 @@ block new_event
 		$("#saveNewEvent").click(function(){
 			$("#newEventForm").submit();
 		});
+
+block next_time	
+	select(name="nextTime", id="nextTime")
+		label(for="option1") Grab Drink
+			option(value="grabDrink", id="option1")
+		label(for="option2") Grab Lunch
+			option(value="grabLunch", id="option2")
+		label(for="option3") Grab Dinner
+			option(value="grabDinner", id="option3")	
+
+
