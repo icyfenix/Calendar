@@ -7,8 +7,8 @@ block content
 
 
 	script
-		var jqxhr = $.getJSON('http://localhost:5000/calendar',
-			{"itemCount":"3"},
+		var jqxhr = $.getJSON('http://localhost:5000/calendar/getItems/3',
+			{},
 			function (data) {
 				console.log("Success!")
 				console.log(data);
