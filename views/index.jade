@@ -1,23 +1,19 @@
 extends layout
 
-block content
-	h1 Calendar
+block next_appointments
+	
 	p Here are your next three appointments:
 	ul(id="appointments")
 
 
 	script
-		var jqxhr = $.getJSON('http://localhost:5000/calendar/getItems/3',
-			{},
-			function (data) {
-				console.log("Success!")
-				console.log(data);
-				for (var i=0;i<data.length;i++){
-					var li = $('<li>');
-					li.html(data[i].Name);
-					$('#appointments').append(li);
-				}
-			});
+		var jqxhr = $.getJSON('http://localhost:5000/calendar/getItems/3',{}, function (data) {
+			for (var i=0;i<data.length;i++){
+				var li = $('<li>');
+				li.html(data[i].Name);
+				$('#appointments').append(li);
+			}
+		});
 		jqxhr.error(function(){
 			console.log("Woo!");
 			})
