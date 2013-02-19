@@ -1,5 +1,5 @@
 exports.getNItems = function(request, response) {
-	var itemCount = request.query.itemCount || 3;
+	var itemCount = request.params.num || 3;
 	var now = new Date();
 	var elligible_events = [];
 	for (var i=0;i<Calendar.length;i++){
@@ -47,42 +47,42 @@ exports.getItemsForDay = function(request, response) {
 var Calendar = [
 {
 	Name : "Tutor Lillian",
-	date : new Date("2/13/13 1:30 PM"),
+	date : new Date("2/22/13 1:30 PM"),
 	Description : "I have to tutor lillian because then she can learn all the things",
 	Attendees : ["Lillian", "Me"],
 	Location : "Citizen Space"
 },
 {
 	Name :" Meet with DBC people",
-	date : new Date("2/13/2013 7:00 PM"),
+	date : new Date("2/22/2013 7:00 PM"),
 	Description : "I have to help them with their project",
 	Attendees : ["Alyssa", "Sara", "Me"],
 	Location : "Dev Boot Camp"
 },
 {
 	Name : "Breakfast With Housemates",
-	date : new Date("2-14-2013 9:00"),
+	date : new Date("2-24-2013 9:00"),
 	Description : "Meet our new housemate, Ionas!",
 	Attendees : ["Me", "Janardan", "Ionas", "Greg", "Carrie", "Rowan", "Rick"],
 	Location : "Home"
 },
 {
 	Name : "Meet with Aiphi",
-	date : new Date("2/15/2013 2:00"),
+	date : new Date("2/24/2013 2:00"),
 	Description : "Rescheduled mentorship stuff",
 	Attendees : ["Me", "Aiphi"],
 	Location : "Citizen Space"
 },
 {
 	Name : "Church in Berkeley",
-	date : new Date("2/15/2013 10:00"),
+	date : new Date("2/25/2013 10:00"),
 	Description : "Checking out the unitarian church in berkeley",
 	Attendees : ["Me", "Janardan"],
 	Location : "Berkeley somewhere"
 },
 {
 	Name : "Lunch with Samihah",
-	date : new Date("2/15/13 12:30"),
+	date : new Date("2/25/13 12:30"),
 	Description : "Lunch and shyt ",
 	Attendees : ["Me", "Samihah"],
 	Location : "Julia's Kitchen"
