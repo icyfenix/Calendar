@@ -7,13 +7,16 @@ block next_appointments
 
 
 	script
-		var jqxhr = $.getJSON('http://localhost:5000/calendar/getItems/3',{}, function (data) {
-			for (var i=0;i<data.length;i++){
-				var li = $('<li>');
-				li.html(data[i].Name);
-				$('#appointments').append(li);
-			}
+		var jqxhr = $.getJSON('http://localhost:5000/calendar/getItems/3',
+			{},
+			function (data) {
+				for (var i = 0; i < data.length; i++){
+					var li = $('<li>');
+					li.html(data[i].Name);
+					$('#appointments').append(li);
+				}
 		});
+
 		jqxhr.error(function(){
 			console.log("Woo!");
 			})
