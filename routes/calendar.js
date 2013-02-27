@@ -57,14 +57,6 @@ exports.newEvent = function(req, res) {
 	console.log(Calendar);
 };
 
-
-exports.nextTimeCanActivity = function(req, res) {
-	var now = new Date(); //current date and time
-	var activity = req.param.activity;
-	var available_times = [];
-	if (activity == "lunch") {
-		for(var i = 0; i < Calendar.length; i++) {
-
 // exports.nextTimeCanActivity = function(req, res) {
 // 	var now = new Date(); //current date and time
 // 	var activity = req.param.activity;
