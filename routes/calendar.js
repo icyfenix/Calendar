@@ -9,21 +9,21 @@ exports.getNItems = function(request, response) {
 		}
 		//Now we have dates only in the future.
 	}
-	retItems = new Array(itemCount); //new array with length of num passed in from request
+	retItems = new Array(itemCount); //new array with length of num passed in from request (default 3)
 	for (var y = 0; y < elligible_events.length; y++){ //loop through eligible events array
 		var smallCount = 0;
 		var num = elligible_events[y].date.getTime(); //grab the time of each eligible event
 		for (var x = 0; x < elligible_events.length; x++){ //loop through eligible events array
 			if (num > elligible_events[x].date.getTime()){
-				smallCount++;
+				smallCount++; //loop through eligible events again and find the position (smallcount) for each event
 			}
 		}
 		if (smallCount < itemCount) {
-			retItems[smallCount] = elligible_events[y];
+			retItems[smallCount] = elligible_events[y]; //add eligible events to retItem array in order from soonest to lastest
 		}
 	}
-	var retString = JSON.stringify(retItems);
-	response.send(retString);
+	var retString = JSON.stringify(retItems); //stringify the retItem array
+	response.send(retString); //send the stringified array with the response
 };
 
 exports.getItemsForDay = function(request, response) {
@@ -37,7 +37,7 @@ exports.getItemsForDay = function(request, response) {
 		}
 		//Now we have dates only in the future.
 	}
-	response.send(elligible_events);
+	response.send(elligible_events);vc
 };
 
 exports.newEvent = function(req, res) {
@@ -57,26 +57,26 @@ exports.newEvent = function(req, res) {
 	console.log(Calendar);
 };
 
-// exports.nextTimeCanActivity = function(req, res) {
-// 	var now = new Date(); //current date and time
-// 	var activity = req.param.activity;
-// 	var available_times = [];
-// 	if (activity == "lunch") {
-// 		for(var i = 0; i < Calendar.length; i++) {
+exports.nextTime = function(req, res) {
+	var now = new Date(); //current date and time
+	var activity = req.param.activity;
+	var available_times = [];
+	if (activity == "grabLunch") {
+		for(var i = 0; i < Calendar.length; i++) {
 
-// 		}
-// 	} else if (activity == "dinner") {
+		}
+	}
 
-// 	} else if (activity == "drinks") {
+	} else if (activity == "grabDrinks") {
 
-// 	} else if (activity == "vacation") {
+	} else if (activity == "dayOff") {
 
-// 	} else if (activity == "mentor") {
+	} 
+};
 
-// 	} else if (activity == "hack") {
-
-// 	}
-// };
+// exports.eventsOnDate = function(req, res) {
+// 	var date = req.
+// }
 
 var Calendar = [
 {
