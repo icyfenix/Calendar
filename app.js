@@ -8,6 +8,7 @@ var express = require('express'),
   user = require('./routes/user'),
   http = require('http'),
   calendar = require('./routes/calendar'),
+  euler = require('./routes/euler'),
   path = require('path');
 
 var app = express();
@@ -32,8 +33,8 @@ app.configure('development', function(){
 app.get('/', routes.index);
 app.get('/calendar/getItems/:num', calendar.getNItems);
 app.post('/calendar/new_event', calendar.newEvent);
-//app.get('/calendar/next_time', calendar.nextTime);
-//app.get('/calendar/events_on_date', calendar.eventsOnDate);
+app.get('/calendar/next_time', calendar.nextTime);
+app.get('/euler', euler.answers);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
