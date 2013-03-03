@@ -1,10 +1,8 @@
 exports.getNItems = function(request, response) {
 	var itemCount = request.params.num || 3; //pass in num of events from request
 	var now = new Date(); //current date and time
-	console.log("date: " + now);
 	var elligible_events = [];
 	for (var i = 0; i < Calendar.length; i++){
-		console.log("Calendar items: " + Calendar[i].startTime);
 		//Eliminate dates already passed by adding all future dates to array
 		if (Calendar[i].startTime.getTime() > now.getTime()){
 			elligible_events.push(Calendar[i]);
@@ -60,69 +58,84 @@ exports.newEvent = function(req, res) {
 };
 
 exports.nextTime = function(req, res) {
-	var activity = req.params.activity;
-	console.log(req.params.activity);
+	console.log(req);
+	var activity = req.query.activity;
 	//define a variable time that will store the start time of of available activity
 	var time;
 	var available_times = [];
 	//Loop through the next 31 days
 	for (var i = 0; i < 31; i++) {
-		//The day that we will check
-		var day = new Date().getDate() + i;
-		console.log("day: " + day);
+		if(available_times.length < 3) {
+			//The day that we will check
+			var day = new Date().getDate() + i;
+			var month = new Date().getMonth() + 1; //getMonth returns a month (0-11)
+			var year = new Date().getFullYear();
+			console.log("day: " + day);
+			console.log("month: " + month);
+			console.log("year: " + year);
 
-		//create empty array with 24 null spaces (for each hour in a day)
-		var dayArray = new Array(24);
-		console.log("dayArray: " + JSON.stringify(dayArray));
+			//create empty array with 24 null spaces (for each hour in a day)
+			var dayArray = [];
+			for (var o = 1; o < 25; o++) {
+				dayArray.push(o);
+			}
+			console.log("dayArray: " + JSON.stringify(dayArray));
 
-		//loop through our Calendar data
-		for (var j = 0; j < Calendar.length; j++){
-			//grab the date of the start time for each calendar item (evals to a number)
-			var calendarDate = Calendar[j].startTime.getDate();
-			console.log("calendarDate: " + calendarDate);
+			//loop through our Calendar data
+			for (var j = 0; j < Calendar.length; j++){
+				//grab the month from the start time (number)
+				var startMonth = Calendar[j].startTime.getMonth();
+				//grab the day of the month from the start time (number)
+				var startDate = Calendar[j].startTime.getDate();
+				//grab the year from the start time (number)
+				var startYear = Calendar[j].startTime.getFullYear();
+				console.log("startMonth: " + startMonth);
+				console.log("startDate: " + startDate);
+				console.log("startYear: " + startYear);
 
-			//if there is a calendar item on a the day we're checking
-			if (calendarDate == day){
-				//grab the start time hour (evals to a number)
-				var hour = Calendar[j].startTime.getHours();
-				console.log("hour: " + hour);
+				//if there is a calendar item on a the day we're checking
+				if (startMonth == month && startDate == day && startYear == year) {
+					//grab the start time hour (evals to a number)
+					var hour = Calendar[j].startTime.getHours();
+					console.log("hour: " + hour);
 
-				//grab the end time hour (evals to a number)
-				var hour2 = Calendar[j].endTime.getHours();
-				console.log("hour2: " + hour2);
+					//grab the end time hour (evals to a number)
+					var hour2 = Calendar[j].endTime.getHours();
+					console.log("hour2: " + hour2);
 
-				//loop through through the hours, starting with the start hour and ending with the end hour
-				for(var k = hour; k <= hour2; k++) {
-					//add an x to the dayArray for all the hours that we have scheduled in our calendar
-					dayArray[k] = 'x';
+					//loop through through the hours, starting with the start hour and ending with the end hour
+					for(var k = hour; k <= hour2; k++) {
+						//add an x to the dayArray for all the hours that we have scheduled in our calendar
+						dayArray[k] = 'x';
+					}
+
+					console.log("dayArray: " + JSON.stringify(dayArray));
+					//return dayArray with all the busy times in the day
 				}
 
-				console.log("dayArray: " + JSON.stringify(dayArray));
-				//return dayArray with all the busy times in the day
 			}
 
-		}
+			//loop through array of available activities
+			for (var m = 0; m < activities.length; m++) {
 
-		//loop through array of available activities
-		for (var m = 0; m < activities.length; m++) {
-
-			//if the activity name we passed in matches an available activity
-			if (activities[m].name == activity) {
-				//grab the start time of the activity
-				time = activities[m].timeStart;
-				console.log("time: " + time);
+				//if the activity name we passed in matches an available activity
+				if (activities[m].name == activity) {
+					//grab the start time of the activity
+					time = activities[m].timeStart;
+					console.log("time: " + time);
+				}
 			}
-		}
 
-		//if the time in the dateArray is empty (does not contain an 'x')
-		if (dayArray[time] !== 'x') {
-			//push the day onto our available_times array
-			available_times.push(day);
-			console.log('available times: ' + JSON.stringify(available_times));
+			//if the time in the dateArray is empty (does not contain an 'x')
+			if (dayArray[time] !== 'x') {
+				//push the day onto our available_times array
+				available_times.push(month + "-" + day + "-" + year + " at " + dayArray[time] + ":00");
+				console.log('available times: ' + JSON.stringify(available_times));
+			}
+		} else {
+			res.send(JSON.stringify(available_times));
 		}
 	}
-
-	res.send(JSON.stringify(available_times));
 };
 
 // exports.eventsOnDate = function(req, res) {

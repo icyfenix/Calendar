@@ -52,21 +52,24 @@ block next_time
 		option(value="off", id="option3") Take Time Off
 	button(id="submitActivity", class="btn btn-primary") ?
 	p Here's the next time you can do [something]:
-	ul(id="next_time")
+	p(id="next_time")
 	script
 		$("#submitActivity").click(function(){
 			$("#nextTimeForm").submit();
 			var next_time_activity = $.getJSON('http://localhost:5000/calendar/next_time',
 				{activity: $('#activity').val()},
 				function (data) {
-					for (var i = 0; i < data.length; i++){
+					var ul = $('<ul>');
+					for (var i = 0; i < data.length; i++) {
 						var li = $('<li>');
 						li.html(data[i]);
-						$('#next_time').append(li);
+						ul.append(li);
+					}
+					$('#next_time').html(ul);
 				}
-			});
+			);
 
-			next_time_activity.error(function(){
+			next_time_activity.error(function() {
 				console.log("Oh noes, something went wrong!");
-			})
+			});
 		});
