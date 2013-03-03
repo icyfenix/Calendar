@@ -45,13 +45,28 @@ block new_event
 			$("#newEventForm").submit();
 		});
 
-block next_time	
-	select(name="nextTime", id="nextTime")
-		label(for="option1") Grab Drink
-			option(value="grabDrink", id="option1")
-		label(for="option2") Grab Lunch
-			option(value="grabLunch", id="option2")
-		label(for="option3") Grab Dinner
-			option(value="grabDinner", id="option3")	
+block next_time
+	select(name="activity", id="activity")
+		option(value="drink", id="option1") Grab Drink
+		option(value="lunch", id="option2") Grab Lunch
+		option(value="off", id="option3") Take Time Off
+	button(id="submitActivity", class="btn btn-primary") ?
+	p Here's the next time you can do [something]:
+	ul(id="next_time")
+	script
+		$("#submitActivity").click(function(){
+			$("#nextTimeForm").submit();
+			var next_time_activity = $.getJSON('http://localhost:5000/calendar/next_time',
+				{activity: $('#activity').val()},
+				function (data) {
+					for (var i = 0; i < data.length; i++){
+						var li = $('<li>');
+						li.html(data[i]);
+						$('#next_time').append(li);
+				}
+			});
 
-
+			next_time_activity.error(function(){
+				console.log("Oh noes, something went wrong!");
+			})
+		});
