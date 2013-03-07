@@ -17,7 +17,7 @@ block next_appointments
 		});
 
 		jqxhr.error(function(){
-			console.log("Woo!");
+			console.log("ugh, was not able to grab data from AJAX call!");
 			})
 
 block new_event
@@ -46,16 +46,15 @@ block new_event
 		});
 
 block next_time
+	p When is the next time I can...
 	select(name="activity", id="activity")
 		option(value="drink", id="option1") Grab Drink
 		option(value="lunch", id="option2") Grab Lunch
 		option(value="off", id="option3") Take Time Off
 	button(id="submitActivity", class="btn btn-primary") ?
-	p Here's the next time you can do [something]:
 	p(id="next_time")
 	script
 		$("#submitActivity").click(function(){
-			$("#nextTimeForm").submit();
 			var next_time_activity = $.getJSON('http://localhost:5000/calendar/next_time',
 				{activity: $('#activity').val()},
 				function (data) {
@@ -71,5 +70,35 @@ block next_time
 
 			next_time_activity.error(function() {
 				console.log("Oh noes, something went wrong!");
+			});
+		});
+
+block schedule_on_date
+	label(for="searchDate") What does my schedule look like on: 
+		input(id="searchDate", name="searchDate", type="datetime", tabindex="1", autofocus="true")
+	button(id="submitSearchDate", class="btn btn-primary") ?
+	p(id="schedOnDate")
+	script
+		$("#searchDate").datepicker();
+		$("#submitSearchDate").click(function(){
+			var sched_on_date = $.getJSON('http://localhost:5000/calendar/schedule_on_date',
+				{date: $('#searchDate').val()},
+				function (data) {
+					if(data.length > 0) {
+						var ul = $('<ul>');
+						for (var i = 0; i < data.length; i++) {
+							var li = $('<li>');
+							li.html(data[i].Name);
+							ul.append(li);
+						}
+						$('#schedOnDate').html(ul);
+					} else {
+						$('#schedOnDate').html("You have no events scheduled for this day!");
+					}
+				}
+			);
+
+			sched_on_date.error(function() {
+				console.log("Oh noes, something went wrong with schedule_on_date!");
 			});
 		});

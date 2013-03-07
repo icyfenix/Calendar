@@ -28,12 +28,18 @@ app.configure(function(){
 
 app.configure('development', function(){
   app.use(express.errorHandler());
+  app.set('db connection', "tcp://postgres:5432@localhost/postgres");
+});
+
+app.configure('production', function(){
+  app.set('db connection', process.env.DATABASE_URL);
 });
 
 app.get('/', routes.index);
 app.get('/calendar/getItems/:num', calendar.getNItems);
 app.post('/calendar/new_event', calendar.newEvent);
 app.get('/calendar/next_time', calendar.nextTime);
+app.get('/calendar/schedule_on_date', calendar.scheduleOnDate);
 app.get('/euler', euler.answers);
 
 http.createServer(app).listen(app.get('port'), function(){

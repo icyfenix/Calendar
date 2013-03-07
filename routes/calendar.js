@@ -1,25 +1,44 @@
+// var db = require('pg');
+// express = require('express');
+
+// //make app local to file (references the same app as app.js)
+// var app = express();
+
 exports.getNItems = function(request, response) {
+	// var SQL = 'SELECT * FROM events ORDER BY date, starttime, endtime;';
+	// var database = new db.Client(app.get('db connection'));
 	var itemCount = request.params.num || 3; //pass in num of events from request
 	var now = new Date(); //current date and time
-	var elligible_events = [];
+	var eligible_events = [];
+	// database.connect(function(err) {
+	// 	if(!err) {
+	// 		database.query(SQL, function(err, content) {
+	// 			console.log(err);
+	// 			console.log(content);
+	// 		});
+	// 	} else {
+	// 		console.log('error connecting to database *sadface*');
+	// 		response(err, null);
+	// 	}
+	// });
 	for (var i = 0; i < Calendar.length; i++){
 		//Eliminate dates already passed by adding all future dates to array
 		if (Calendar[i].startTime.getTime() > now.getTime()){
-			elligible_events.push(Calendar[i]);
+			eligible_events.push(Calendar[i]);
 		}
 		//Now we have dates only in the future.
 	}
 	retItems = new Array(itemCount); //new array with length of num passed in from request (default 3)
-	for (var y = 0; y < elligible_events.length; y++){ //loop through eligible events array
+	for (var y = 0; y < eligible_events.length; y++){ //loop through eligible events array
 		var smallCount = 0;
-		var num = elligible_events[y].startTime.getTime(); //grab the time of each eligible event
-		for (var x = 0; x < elligible_events.length; x++){ //loop through eligible events array
-			if (num > elligible_events[x].startTime.getTime()){
+		var num = eligible_events[y].startTime.getTime(); //grab the time of each eligible event
+		for (var x = 0; x < eligible_events.length; x++){ //loop through eligible events array
+			if (num > eligible_events[x].startTime.getTime()){
 				smallCount++; //loop through eligible events again and find the position (smallcount) for each event
 			}
 		}
 		if (smallCount < itemCount) {
-			retItems[smallCount] = elligible_events[y]; //add eligible events to retItem array in order from soonest to lastest
+			retItems[smallCount] = eligible_events[y]; //add eligible events to retItem array in order from soonest to lastest
 		}
 	}
 	var retString = JSON.stringify(retItems); //stringify the retItem array
@@ -37,7 +56,7 @@ exports.getItemsForDay = function(request, response) {
 		}
 		//Now we have dates only in the future.
 	}
-	response.send(elligible_events);vc
+	response.send(elligible_events);
 };
 
 exports.newEvent = function(req, res) {
@@ -54,7 +73,6 @@ exports.newEvent = function(req, res) {
 		Location : event_location
 	});
 	res.send('New event added to calendar successfully!');
-	console.log(Calendar);
 };
 
 exports.nextTime = function(req, res) {
@@ -84,7 +102,7 @@ exports.nextTime = function(req, res) {
 			//loop through our Calendar data
 			for (var j = 0; j < Calendar.length; j++){
 				//grab the month from the start time (number)
-				var startMonth = Calendar[j].startTime.getMonth();
+				var startMonth = Calendar[j].startTime.getMonth() + 1;
 				//grab the day of the month from the start time (number)
 				var startDate = Calendar[j].startTime.getDate();
 				//grab the year from the start time (number)
@@ -112,7 +130,6 @@ exports.nextTime = function(req, res) {
 					console.log("dayArray: " + JSON.stringify(dayArray));
 					//return dayArray with all the busy times in the day
 				}
-
 			}
 
 			//loop through array of available activities
@@ -126,21 +143,41 @@ exports.nextTime = function(req, res) {
 				}
 			}
 
-			//if the time in the dateArray is empty (does not contain an 'x')
+			//if the start time in the dateArray is empty (does not contain an 'x')
+			//TODO: figure out logic, so if there's any free time within a specific block, schedule activity
 			if (dayArray[time] !== 'x') {
 				//push the day onto our available_times array
 				available_times.push(month + "-" + day + "-" + year + " at " + dayArray[time] + ":00");
 				console.log('available times: ' + JSON.stringify(available_times));
 			}
+
 		} else {
 			res.send(JSON.stringify(available_times));
 		}
 	}
 };
 
-// exports.eventsOnDate = function(req, res) {
-// 	var date = req.
-// }
+exports.scheduleOnDate = function(req, res) {
+	var searchDate = req.query.date;
+	var eventsOnDate = [];
+	for (var i = 0; i < Calendar.length; i++) {
+		//grab the month from the start time (number)
+		var startMonth = Calendar[i].startTime.getMonth() + 1;
+		if (startMonth < 10) {
+			startMonth = "0" + startMonth;
+		}
+		//grab the day of the month from the start time (number)
+		var startDate = Calendar[i].startTime.getDate();
+		//grab the year from the start time (number)
+		var startYear = Calendar[i].startTime.getFullYear();
+		var calDate = startMonth + "/" + startDate + "/" + startYear;
+		if (searchDate == calDate) {
+			eventsOnDate.push(Calendar[i]);
+		}
+	}
+	var eventsOnDateString = JSON.stringify(eventsOnDate);
+	res.send(eventsOnDateString);
+};
 
 var activities =[
 	{
